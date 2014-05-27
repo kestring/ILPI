@@ -25,8 +25,4 @@ public class DAOException extends Exception{
     public String getMessage(){
         return this.codigo + " - " + super.getMessage();
     }
-    
-    public int getCodigo(){
-        return this.codigo;
-    }
 }

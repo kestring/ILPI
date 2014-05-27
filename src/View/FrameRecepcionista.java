@@ -15,7 +15,7 @@ import Control.LoginController;
 public class FrameRecepcionista extends javax.swing.JFrame {
 
     private LoginController interfaceILPI;
-    
+    //SEI LA
     /**
      * Creates new form FrameRecepcionista
      */

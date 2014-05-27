@@ -80,7 +80,7 @@ public class ImplIdosoDAO implements IDAO<Idoso> {
         prepared2 = con.prepareStatement("insert into idoso_quarto ("
                 + " COD_IDOSO,"
                 + " NUM_QUARTO,"
-                + " NUM_ANDAR)"
+                + " NUM_ANDAR) "
                 + " values (?,?,?)");
         
         prepared2.setInt(1, idoso.getCodIdoso());
@@ -204,7 +204,7 @@ public class ImplIdosoDAO implements IDAO<Idoso> {
                 if(idoso.getQuarto().getCapacidade() == 1){
                     sql5 += ", estado = 'indisponivel' ";
                 }
-                    sql5 += " where NUM_QUARTO = ? "
+                    sql += " where NUM_QUARTO = ? "
                          + "   and NUM_ANDAR = ? ";
 
                 prepared5 = con.prepareStatement(sql5);

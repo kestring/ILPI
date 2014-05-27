@@ -6,17 +6,22 @@
 
 package View;
 
+import Control.Impl.ImplFuncionarioDAO;
 import Control.Impl.ImplIdosoDAO;
 import Control.Impl.ImplIncidenteDAO;
+import Control.Impl.ImplUsuarioDAO;
+import Model.Funcionario;
 import Model.Idoso;
 import Model.Incidente;
 import Util.ComponentValidator;
 import Util.DataConverter;
 import Util.Mensagens;
+import Util.Sessao;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 import java.util.Iterator;
 import java.util.List;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -27,8 +32,12 @@ public class FrameRegistroIncidente extends javax.swing.JFrame {
     /**
      * Creates new form RegistroIncidente
      */
-    public FrameRegistroIncidente() {
+    
+    private Funcionario func;
+    
+    public FrameRegistroIncidente(Funcionario func) {
         initComponents();
+        this.func = func;
         try {
         List<Idoso> listaI = ImplIdosoDAO.getInstance().encontrarTodosIdosos();
             if(listaI != null) {
@@ -44,6 +53,9 @@ public class FrameRegistroIncidente extends javax.swing.JFrame {
     
     private void limpar() {
         comboBoxIdoso.setSelectedIndex(0);
+        campoData.setText("");
+        campoOcorrido.setText("");
+        areaDescricao.setText("");
     }
 
     /**
@@ -175,7 +187,7 @@ public class FrameRegistroIncidente extends javax.swing.JFrame {
             return;
         }
         if(!campoOcorrido.getText().equals("")) {
-            
+            in.setNomeOcorrido(campoOcorrido.getText());
         }
         else {
             Mensagens.campoInvalido(this, "Campo Ocorrido");
@@ -188,8 +200,16 @@ public class FrameRegistroIncidente extends javax.swing.JFrame {
             Mensagens.campoInvalido(this, "Campo Descrição");
             return;
         }
+        if(comboBoxIdoso.getSelectedIndex() == 0){
+            Mensagens.campoInvalido(this, "Campo Idoso");
+            return;
+        }
         try {
+            in.setIdoso((Idoso)comboBoxIdoso.getSelectedItem());
+            in.setFunc(this.func);
+            in.setCodigoIncidente(ImplIncidenteDAO.getInstance().encontrarCodMax());
             ImplIncidenteDAO.getInstance().inserir(in);
+            JOptionPane.showMessageDialog(null, "Incidente Cadastrado!");
             limpar();
         } catch(Exception ex) {
             ex.printStackTrace();

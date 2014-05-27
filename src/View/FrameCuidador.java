@@ -6,11 +6,8 @@
 
 package View;
 
-import Control.Impl.Exception.DAOException;
-import Control.Impl.ImplEventoDAO;
 import Control.Impl.ImplIdosoDAO;
 import Control.LoginController;
-import Model.Evento;
 import Model.Idoso;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -26,8 +23,6 @@ public class FrameCuidador extends javax.swing.JFrame {
 
     private LoginController interfaceILPI;
     
-    private Evento proxEvento;
-    
     /**
      * Creates new form FrameCuidador
      */
@@ -39,30 +34,13 @@ public class FrameCuidador extends javax.swing.JFrame {
         SimpleDateFormat format = new SimpleDateFormat("dd/MM/YYYY");
         labelDataAtual.setText(format.format(date));
         try {
-            try {
-                List<Idoso> lista = ImplIdosoDAO.getInstance().encontrarTodosCuidador(interfaceILPI.getUser().getFunc().getCodFuncionario());
-                for (Iterator<Idoso> it = lista.iterator(); it.hasNext();) {
-                    Idoso idoso = it.next();
-                    areaIdososCuidador.append(idoso.getNomeIdoso() + "\n");
-                }
-            } catch(DAOException daoEx) {
-                JOptionPane.showMessageDialog(this, "Nenhum idoso cadastrado");
-            } 
-            try {
-                proxEvento = ImplEventoDAO.getInstance().encontrarProximoEvento(format.format(date));
-                if(proxEvento != null) {
-                    labelDataEvento.setText(proxEvento.getDataEvento());
-                    labelTipoEvento.setText(proxEvento.getNomeEvento());
-                }
-                else {
-                    labelDataEvento.setText("não registrado");
-                    labelTipoEvento.setText("");
-                }
-            } catch(DAOException daoEx) {
-                labelDataEvento.setText("não registrado");
-                labelTipoEvento.setText("");
-            } 
+            List<Idoso> lista = ImplIdosoDAO.getInstance().encontrarTodosCuidador(interfaceILPI.getUser().getFunc().getCodFuncionario());
+            for (Iterator<Idoso> it = lista.iterator(); it.hasNext();) {
+                Idoso idoso = it.next();
+                areaIdososCuidador.append(idoso.getNomeIdoso() + "\n");
+            }
         } catch(Exception ex) {
+            JOptionPane.showMessageDialog(null, "Não existem Idosos cadastrados para este Cuidador!");
             ex.printStackTrace();
         }
     }
@@ -96,7 +74,6 @@ public class FrameCuidador extends javax.swing.JFrame {
         jMenu1 = new javax.swing.JMenu();
         jMenuItem3 = new javax.swing.JMenuItem();
         jMenuItem4 = new javax.swing.JMenuItem();
-        jMenuItem5 = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -181,15 +158,12 @@ public class FrameCuidador extends javax.swing.JFrame {
         jMenu1.add(jMenuItem3);
 
         jMenuItem4.setText("Registro de Incidente");
-        jMenu1.add(jMenuItem4);
-
-        jMenuItem5.setText("Relatórios");
-        jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
+        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem5ActionPerformed(evt);
+                jMenuItem4ActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuItem5);
+        jMenu1.add(jMenuItem4);
 
         jMenuItem2.setText("Sair");
         jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
@@ -248,12 +222,11 @@ public class FrameCuidador extends javax.swing.JFrame {
         frame.setVisible(true);
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
-    private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
-        FrameRelatorios frame;
-        frame = new FrameRelatorios();
+    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
+        FrameRegistroIncidente frame = new FrameRegistroIncidente(interfaceILPI.getUser().getFunc());
         frame.setLocationRelativeTo(this);
         frame.setVisible(true);
-    }//GEN-LAST:event_jMenuItem5ActionPerformed
+    }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextArea areaIdososCuidador;
@@ -266,7 +239,6 @@ public class FrameCuidador extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
-    private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane3;

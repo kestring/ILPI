@@ -113,7 +113,7 @@ public class ImplAlimentoDAO implements IDAO<Alimento> {
         result = prepared.executeQuery();
 
         if(result.next()){
-            sql = "delete from alimento "
+            sql = "delete alimento "
                     + "where COD_ALIMENTO = ?";
             prepared = con.prepareStatement(sql);
             prepared.setInt(1, ali.getCodigo());

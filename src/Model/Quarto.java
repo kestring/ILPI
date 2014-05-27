@@ -13,8 +13,8 @@ import java.util.List;
  */
 public class Quarto implements Comparable<Quarto> {
     
-    public static final String ESTADO_DISPONIVEL = "disponivel";
-    public static final String ESTADO_INDISPONIVEL = "indisponivel";
+    public static final String ESTADO_DISPONIVEL = "disponível";
+    public static final String ESTADO_INDISPONIVEL = "indisponível";
     
     private int numQuarto;
     private int numAndar;

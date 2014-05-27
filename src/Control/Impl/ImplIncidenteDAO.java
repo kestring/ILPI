@@ -47,16 +47,14 @@ public class ImplIncidenteDAO implements IDAO<Incidente> {
                 + "COD_IDOSO,"
                 + "COD_FUNCIONARIO,"
                 + "DAT_OCORRENCIA,"
-                + "DSC_INCIDENTE"
-                + "NOM_OCORRIDO) "
-                + "values (?,?,?,?,?,?)");
+                + "DSC_INCIDENTE) "
+                + "values (?,?,?,?,?)");
 
         prepared.setInt(1, inc.getCodigoIncidente());
         prepared.setInt(2, inc.getIdoso().getCodIdoso());
         prepared.setInt(3, inc.getFunc().getCodFuncionario());
         prepared.setDate(4, inc.getDataIncidente());
         prepared.setString(5, inc.getDescricaoIncidente());
-        prepared.setString(6, inc.getNomIncidente());
 
         prepared.execute();
     }
@@ -85,7 +83,6 @@ public class ImplIncidenteDAO implements IDAO<Incidente> {
                         + "COD_FUNCIONARIO = ?,"
                         + "DAT_OCORRENCIA = ?,"
                         + "DSC_INCIDENTE = ? "
-                        + "NOM_OCORRIDO = ?"
                   + "where COD_INCIDENTE = ?";
 
             prepared = con.prepareStatement(sql);
@@ -96,7 +93,6 @@ public class ImplIncidenteDAO implements IDAO<Incidente> {
             prepared.setDate(4, inc.getDataIncidente());
             prepared.setString(5, inc.getDescricaoIncidente());
             prepared.setInt(6, inc.getCodigoIncidente());
-            
 
             prepared.execute();
         }
@@ -157,14 +153,33 @@ public class ImplIncidenteDAO implements IDAO<Incidente> {
 
             Date datOcorrencia = result.getDate("DAT_OCORRENCIA");
             String dscIncidente = result.getString("DSC_INCIDENTE");
-            String nomIncidente = result.getString("NOM_OCORRIDO");
+            String nome = result.getString("NOM_OCORRIDO");
 
-            a = new Incidente(codIncidente, f, i,datOcorrencia,dscIncidente, nomIncidente);
+            a = new Incidente(codIncidente, f, i,datOcorrencia,dscIncidente, nome);
         }
 
         if(a == null){
             throw new DAOException("Não foi possível o encontrar alimento! Cod = " + codigo);
         }
         return a;
+    }
+
+    public int encontrarCodMax() throws DAOException, SQLException{
+        Connection con = ConectionManager.getInstance().getConexao();
+        
+        PreparedStatement prepared;
+        ResultSet result;
+        //TODO Fazer o insert do idoso aqui
+        String sql = "select nvl(max(COD_INCIDENTE),0) + 1 as VAL from incidente ";
+        
+        prepared = con.prepareStatement(sql);
+
+        result = prepared.executeQuery();
+
+        if(result.next()){
+            return result.getInt("VAL");
+        }else{
+            return 1;
+        }
     }
 }

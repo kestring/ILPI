@@ -82,7 +82,6 @@ public class Evento {
         this.descricaoEvento = descricaoEvento;
     }
     
-    @Override
     public String toString(){
         return this.getNomeEvento();
     }

@@ -15,6 +15,7 @@ import Util.Mensagens;
 import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.List;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -307,6 +308,7 @@ public class FrameCadastroPertence extends javax.swing.JFrame {
                     }
                 }
             } catch(SQLException | DAOException ex) {
+                JOptionPane.showMessageDialog(null, "Idoso não possui pertences cadastrados!");
                 ex.printStackTrace();
             }
         }

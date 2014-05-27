@@ -175,7 +175,7 @@ public class ImplQuartoDAO implements IDAO<Quarto> {
             lista.add(q);
         }
         if(lista.isEmpty()){
-            throw new DAOException("Não foi possível encontrar Quarto");
+            throw new DAOException("Não foi possível encontrar alimentos");
         }
         Collections.sort(lista);
         return lista;

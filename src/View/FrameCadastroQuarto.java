@@ -262,7 +262,6 @@ public class FrameCadastroQuarto extends javax.swing.JFrame {
         }
         if(ComponentValidator.integer(campoNumQuarto)) {
             quarto.setNumAndar(Integer.parseInt(campoNumQuarto.getText()));
-            System.out.println("Numero quarto = " + quarto.getNumAndar());
         }
         else {
             Mensagens.campoInvalido(this, "Campo Número do Quarto");
@@ -278,9 +277,8 @@ public class FrameCadastroQuarto extends javax.swing.JFrame {
             ImplQuartoDAO.getInstance().inserir(quarto);
             limparCadastro();
             Mensagens.cadastradoComSucesso(this);
-        } catch(DAOException daoEx) {
-            JOptionPane.showMessageDialog(null, "Numero do Quarto já cadastrado!");
         } catch(Exception ex) {
+            JOptionPane.showConfirmDialog(null, "Numero do Quarto já cadastrado!");
             ex.printStackTrace();
         }
     }//GEN-LAST:event_botaoCadastrarActionPerformed

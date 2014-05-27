@@ -178,7 +178,7 @@ public class Idoso implements Comparable<Idoso> {
     
     @Override
     public String toString() {
-        return codIdoso + " - " + nomeIdoso;
+        return nomeIdoso;
     }
     
     @Override

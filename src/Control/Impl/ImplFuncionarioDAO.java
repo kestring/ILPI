@@ -187,4 +187,39 @@ public class ImplFuncionarioDAO implements IDAO<Funcionario> {
             return lista;
         }
     }
+
+    public Funcionario encontrarFuncionario(String nomeUser) throws SQLException, DAOException{
+        Connection con = ConectionManager.getInstance().getConexao();
+        
+        PreparedStatement prepared;
+        ResultSet result;
+        //TODO Fazer o insert do idoso aqui
+        String sql = "select f.* "
+                   + "  from funcionario f,"
+                   + "       usuario u "
+                   + " where f.cod_funcionario = u.cod_funcionario"
+                   + "   and upper(u.nom_usuario) = upper('?')";
+        prepared = con.prepareStatement(sql);
+        
+        prepared.setString(1, nomeUser);
+
+        result = prepared.executeQuery();
+
+        Funcionario a = null;
+        while(result.next()){
+            int codFuncionario = result.getInt("COD_FUNCIONARIO");
+            String nomeFuncionario = result.getString("NOM_FUNCIONARIO");
+            String nomFuncao = result.getString("NOM_FUNCAO");
+            String endereco = result.getString("ENDERECO");
+            long telefone = result.getLong("NUM_TELEFONE");
+
+            a = new Funcionario(codFuncionario, nomeFuncionario, nomFuncao, endereco, telefone);
+        }
+
+        if(a == null){
+            throw new DAOException("Não foi possível o encontrar Funcionarios!");
+        }else{
+            return a;
+        }
+    }
 }

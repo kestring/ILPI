@@ -73,7 +73,7 @@ public class Cardapio {
     
     @Override
     public String toString() {
-        return this.indice + " - " + this.nome;
+        return this.indice + " - " +this.nome;
     }
     
 }

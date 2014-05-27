@@ -6,7 +6,6 @@
 
 package View;
 
-import Control.Impl.Exception.DAOException;
 import Control.Impl.ImplFuncionarioDAO;
 import Control.Impl.ImplIdosoDAO;
 import Control.Impl.ImplQuartoDAO;
@@ -38,19 +37,14 @@ public class FrameCadastroIdoso extends javax.swing.JFrame {
     public FrameCadastroIdoso() {
         initComponents();
         try {
-            try {
-                List<Quarto> lista = ImplQuartoDAO.getInstance().encontrarQuartoDisponivel();
-                if(lista != null) {
-                    for (Iterator<Quarto> it = lista.iterator(); it.hasNext();) {
-                        Quarto q = it.next();
-                        comboBoxQuarto.addItem(q);
-                        comboBoxQuartoEdicao.addItem(q);
-                    }
+            List<Quarto> lista = ImplQuartoDAO.getInstance().encontrarQuartoDisponivel();
+            if(lista != null) {
+                for (Iterator<Quarto> it = lista.iterator(); it.hasNext();) {
+                    Quarto q = it.next();
+                    comboBoxQuarto.addItem(q);
+                    comboBoxQuartoEdicao.addItem(q);
                 }
-            } catch(DAOException daoEx) {
-                JOptionPane.showMessageDialog(this, "Não há quarto cadastrado");
             }
-            try {
             List<Funcionario> listaCuidadores = ImplFuncionarioDAO.getInstance().encontraFuncCuidador();
             if(listaCuidadores != null) {
                 for (Iterator<Funcionario> it = listaCuidadores.iterator(); it.hasNext();) {
@@ -59,11 +53,7 @@ public class FrameCadastroIdoso extends javax.swing.JFrame {
                     comboBoxCuidadorEdicao.addItem(funcionario);
                 }
             }
-            } catch(DAOException daoEx) {
-                JOptionPane.showMessageDialog(this, "Não há cuidador cadastrado");
-            }
-        
-        } catch(Exception ex) {
+        }catch(Exception ex) {
             ex.printStackTrace();
         }  
     }
@@ -1140,9 +1130,7 @@ public class FrameCadastroIdoso extends javax.swing.JFrame {
             Quarto q = idoso.getQuarto();
             quarto = (Quarto)comboBoxQuartoEdicao.getSelectedItem();
             idoso.setQuarto(quarto);
-            
             ImplIdosoDAO.getInstance().atualizar(idoso);
-            ImplQuartoDAO.getInstance().atualizar(quarto);
             limparEdicao();
             Mensagens.alteradoComSucesso(this);
         } catch(Exception ex) {

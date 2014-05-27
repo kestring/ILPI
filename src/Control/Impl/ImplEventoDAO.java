@@ -11,16 +11,12 @@ import Model.Evento;
 import Model.Funcionario;
 import Model.Idoso;
 import Util.ConectionManager;
-import Util.DataConverter;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -102,7 +98,7 @@ public class ImplEventoDAO implements IDAO<Evento> {
         
         PreparedStatement prepared2;
         
-        prepared2 = con.prepareStatement("delete from idoso_evento"
+        prepared2 = con.prepareStatement("delete idoso_evento"
                 + " where cod_evento = ?");
         
         prepared2.setInt(1, evento.getCodigo());
@@ -243,25 +239,9 @@ public class ImplEventoDAO implements IDAO<Evento> {
         return a;
     }
     
-    public Evento encontrarProximoEvento(String data) throws DAOException, SQLException {
-        SimpleDateFormat format = new SimpleDateFormat("DD/MM/YYYY");
-        Date dataMinima;
-        Evento proxEvento = null;
-        List<Evento> lista = ImplEventoDAO.getInstance().encontrarEventosAposData(data);
-        if(lista.get(0) != null) {
-            dataMinima = DataConverter.stringTypeToSQLDate(lista.get(0).getDataEvento());
-            for (Iterator<Evento> it = lista.iterator(); it.hasNext();) {
-                Evento evento = it.next();
-                if(dataMinima.before(DataConverter.stringTypeToSQLDate(evento.getDataEvento()))) {
-                    dataMinima = DataConverter.stringTypeToSQLDate(evento.getDataEvento());
-                    proxEvento = evento;
-                }
-            }
-            return proxEvento;
-        }
-        else {
-            return null;
-        }
+    public Evento encontrarProximoEvento(Date data) throws DAOException, SQLException {
+        // RETORNAR O PROXIMO EVENTO LEVANDO EM CONTA A DATA INFORMADA
+        throw new UnsupportedOperationException("Not supported yet.");
     }
     
     public int encontrarCodMax() throws DAOException, SQLException{
